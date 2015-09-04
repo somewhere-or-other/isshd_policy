@@ -2635,11 +2635,8 @@ event stop_reader()
 event start_reader()
 	{
 	print "start reader";
-	local config_strings: table[string] of string = {
-		 ["offset"] = "-1",
-	};
 	if ( stop_sem == 1 ) { 
-		Input::add_event([$source=data_file, $config=config_strings, $reader=Input::READER_RAW, $mode=Input::STREAM, $name="isshd", $fields=lineVals, $ev=sshLine]);
+		Input::add_event([$source=data_file, $reader=Input::READER_RAW, $mode=Input::TSTREAM, $name="isshd", $fields=lineVals, $ev=sshLine]);
 		stop_sem = 0;
 		}
 	}
@@ -2701,10 +2698,7 @@ function init_datastream() : count
 	
 	if ( DATANODE && (file_size(data_file) != -1.0) ) {
 		print fmt("%s SSHD data file %s located", gethostname(), data_file);
-		local config_strings: table[string] of string = {
-			 ["offset"] = "2",
-		};
-		Input::add_event([$source=data_file, $config=config_strings, $reader=Input::READER_RAW, $mode=Input::STREAM, $name="isshd", $fields=lineVals, $ev=sshLine]);
+		Input::add_event([$source=data_file, $reader=Input::READER_RAW, $mode=Input::TSTREAM, $name="isshd", $fields=lineVals, $ev=sshLine]);
 
 		# start rate monitoring for event stream 
 		schedule input_test_interval { transaction_rate() };
