@@ -11,13 +11,23 @@ TODO
 
 
 Basic Bro setup:
-- Download latest Bro (currently 2.4) tarball (eg. https://www.bro.org/downloads/release/bro-2.4.1.tar.gz)
-- Follow basic setup of Bro (see https://www.bro.org/sphinx/install/install.html), to configure a single standalone bro instance
-- Add "@load isshd_policy" to /usr/local/bro/share/bro/site/local.bro to load new code
-- Add 'redef SSHD_IN_STREAM::data_file = "/usr/local/bro/logs/isshd/isshd.log";' to /usr/local/bro/share/bro/site/local.bro (adjust as appropriate for your log location from ssllogmux)
-- Modify "host=" in /usr/local/bro/etc/node.cfg to point to FQDN, not "localhost" (not sure this is actually necessary)
+- Download latest Bro (currently 2.4) tarball (eg. 
+https://www.bro.org/downloads/release/bro-2.4.1.tar.gz)
+- Follow basic setup of Bro (see 
+https://www.bro.org/sphinx/install/install.html), to configure a single 
+standalone bro instance
+- Add "@load isshd_policy" to /usr/local/bro/share/bro/site/local.bro to load 
+new code
+- Add 'redef SSHD_IN_STREAM::data_file = "/usr/local/bro/logs/isshd/isshd.log";' 
+to /usr/local/bro/share/bro/site/local.bro (adjust as appropriate for your log 
+location from ssllogmux)
+- Modify "host=" in /usr/local/bro/etc/node.cfg to point to FQDN, not 
+"localhost" (not sure this is actually necessary)
 - Add 'aux_scripts="isshd_policy/init_node"' to /usr/local/bro/etc/node.cfg
-- Inside /usr/local/bro/share/bro/site, do "git clone https://github.com/set-element/host_core.git"
-- Inside /usr/local/bro/share/bro/site, do "git clone https://github.com/somewhere-or-other/isshd_policy.git", and "git checkout origin unescape_URI" (TODO: Verify checkout syntax)
+- Inside /usr/local/bro/share/bro/site, do "git clone 
+https://github.com/set-element/host_core.git"
+- Inside /usr/local/bro/share/bro/site, do "git clone 
+https://github.com/somewhere-or-other/isshd_policy.git", and "git checkout 
+origin unescape_URI" (TODO: Verify checkout syntax)
 - Verify bro syntax with 'bro check'
 - Start bro using 'bro deploy'
