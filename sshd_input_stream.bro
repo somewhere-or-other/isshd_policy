@@ -2537,7 +2537,7 @@ event sshLine(description: Input::EventDescription, tpe: Input::Event, LV: lineV
 	++input_count;
 
 	# get the event name
-	local event_name = parts[1];
+	local event_name = parts[0];
 	
 	# there is no reason for this value to be this low for a legitimate line
 	if ( l_parts < 5 )
