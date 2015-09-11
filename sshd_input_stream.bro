@@ -215,6 +215,10 @@ function dump_line_data(_data: string) : count
 function _auth_info_3(_data: string) : count
 	{
 	# event auth_info_3(ts: time, version: string, sid: string, cid: count, authmsg: string, uid: string, meth: string, s_addr: addr, s_port: port, r_addr: addr, r_port: port)
+	
+	print fmt("DEBUGGING DATA (lbrown) inside _auth_info_3");
+
+	
 	local parts = split_string(_data, kv_splitter);
 
 	local ts = ssh_time( parts[1] );
@@ -386,6 +390,9 @@ function _sftp_process_setstat_3(_data: string) : count
 function _auth_key_fingerprint_3(_data: string) : count
 	{
 	# event auth_key_fingerprint_3(ts: time, version: string, sid: string, cid: count, fingerprint: string, key_type: string)
+	
+	print fmt("DEBUGGING DATA (lbrown) inside _auth_key_fingerprint_3");
+	
 	local parts = split_string(_data, kv_splitter);
 
 	local ts = ssh_time( parts[1] );
@@ -446,6 +453,9 @@ function _auth_ok_2(_data: string) : count
 function _channel_data_client_3(_data: string) : count
 	{
 	# event channel_data_client_3(ts: time, version: string, sid: string, cid: count, channel:count, _data:string)
+	
+	print fmt("DEBUGGING DATA (lbrown) inside _channel_data_client_3");
+	
 	local parts = split_string(_data, kv_splitter);
 
 	local ts = ssh_time( parts[1] );
@@ -462,6 +472,9 @@ function _channel_data_client_3(_data: string) : count
 function _channel_data_server_3(_data: string) : count
 	{
 	# event channel_data_server_3(ts: time, version: string, sid: string, cid: count, channel: count, _data: string)
+	
+	print fmt("DEBUGGING DATA (lbrown) inside _channel_data_server_3");
+	
 	local parts = split_string(_data, kv_splitter);
 
 	local ts = ssh_time( parts[1] );
@@ -520,6 +533,9 @@ function _data_server_sum_2(_data: string) : count
 function _channel_data_server_sum_3(_data: string) : count
 	{
 	# event channel_data_server_sum_3(ts: time, version: string, sid: string, cid: count, channel: count, bytes_skip: count)
+	
+	print fmt("DEBUGGING DATA (lbrown) inside _channel_data_server_sum_3");
+	
 	local parts = split_string(_data, kv_splitter);
 
 	local ts = ssh_time( parts[1] );
@@ -549,6 +565,9 @@ function _channel_exit_2(_data: string) : count
 function _channel_free_3(_data: string) : count
 	{
 	# event channel_free_3(ts: time, version: string, sid: string, cid: count,channel: count, name: string)
+	
+	print fmt("DEBUGGING DATA (lbrown) inside _channel_free_3");
+	
 	local parts = split_string(_data, kv_splitter);
 
 	local ts = ssh_time( parts[1] );
@@ -566,6 +585,9 @@ function _channel_free_3(_data: string) : count
 function _channel_new_3(_data: string) : count
 	{
 	# event channel_new_3(ts: time, version: string, sid: string, cid: count, found: count, ctype: count, name: string)
+	
+	print fmt("DEBUGGING DATA (lbrown) inside _channel_new_3");
+	
 	local parts = split_string(_data, kv_splitter);
 
 	local ts = ssh_time( parts[1] );
@@ -971,6 +993,9 @@ function _server_input_channel_open_2(_data: string) : count
 function _session_channel_request_3(_data: string) : count
 	{
 	# event session_channel_request_3(ts: time, version: string, sid: string, cid: count, pid: int, channel: count, rtype: string)
+	
+	print fmt("DEBUGGING DATA (lbrown) inside _session_channel_request_3");
+	
 	local parts = split_string(_data, kv_splitter);
 
 	local ts = ssh_time( parts[1] );
@@ -989,6 +1014,9 @@ function _session_channel_request_3(_data: string) : count
 function _session_exit_3(_data: string) : count
 	{
 	# event session_exit_3(ts: time, version: string, sid: string, cid: count, channel: count, pid: count, ststus: count)
+	
+	print fmt("DEBUGGING DATA (lbrown) inside _session_exit_3");
+	
 	local parts = split_string(_data, kv_splitter);
 
 	local ts = ssh_time( parts[1] );
@@ -1007,6 +1035,9 @@ function _session_exit_3(_data: string) : count
 function _session_input_channel_open_3(_data: string) : count
 	{
 	# event session_input_channel_open_3(ts: time, version: string, sid: string, cid: count, tpe: count, ctype: string, rchan: int, rwindow: int, rmaxpack: int)
+	
+	print fmt("DEBUGGING DATA (lbrown) inside _session_input_channel_open_3");
+	
 	local parts = split_string(_data, kv_splitter);
 
 	local ts = ssh_time( parts[1] );
@@ -1027,6 +1058,9 @@ function _session_input_channel_open_3(_data: string) : count
 function _session_new_3(_data: string) : count
 	{
 	# event session_new_3(ts: time, version: string, sid: string, cid: count, pid: int, ver: string)
+	
+	print fmt("DEBUGGING DATA (lbrown) inside _session_new_3");
+	
 	local parts = split_string(_data, kv_splitter);
 
 	local ts = ssh_time( parts[1] );
@@ -1044,6 +1078,9 @@ function _session_new_3(_data: string) : count
 function _session_remote_do_exec_3(_data: string) : count
 	{
 	# event session_remote_do_exec_3(ts: time, version: string, sid: string, cid: count, channel: count, ppid: count, command: string)
+	
+	print fmt("DEBUGGING DATA (lbrown) inside _session_remote_do_exec_3");
+	
 	local parts = split_string(_data, kv_splitter);
 
 	local ts = ssh_time( parts[1] );
@@ -1062,6 +1099,9 @@ function _session_remote_do_exec_3(_data: string) : count
 function _session_remote_exec_no_pty_3(_data: string) : count
 	{
 	# event session_remote_exec_no_pty_3(ts: time, version: string, sid: string, cid: count, channel: count, ppid: count, command: string)
+	
+	print fmt("DEBUGGING DATA (lbrown) inside _session_remote_exec_no_pty_3");
+	
 	local parts = split_string(_data, kv_splitter);
 
 	local ts = ssh_time( parts[1] );
@@ -1682,6 +1722,9 @@ function _sshd_connection_start_3(_data: string) : count
 	{
 	# event sshd_connection_start_3(ts: time, version: string, sid: string, cid: count, int_list: string, r_addr: addr, r_port: port, l_addr: addr, l_port: port, i: count)
 	# sshd_connection_start_3 time=1342000800.858400 uristring=NMOD_3.08 uristring=931154466%3Agrace01%3A22 count=1398340635 uristring=127.0.0.1_10.77.1.10_128.55.81.74_128.55.34.74_10.10.10.208 addr=10.77.1.1 port=48744/tcp addr=0.0.0.0 port=22/tcp count=140737488349744
+	
+	print fmt("DEBUGGING DATA (lbrown) inside _sshd_connection_start_3");
+
 	local parts = split_string(_data, kv_splitter);
 
 	local ts = ssh_time( parts[1] );
@@ -1740,6 +1783,8 @@ function _sshd_server_heartbeat_3(_data: string) : count
 	# event sshd_server_heartbeat_3(ts: time, version: string, sid: string,  dt: count)
 	local parts = split_string(_data, kv_splitter);
 
+	print fmt("DEBUGGING DATA (lbrown) inside _sshd_server_heartbeat_3");
+	
 	local ts = ssh_time( parts[1] );
 	local version = ssh_string( parts[2] );
 	local sid = ssh_string( parts[3] );
@@ -1753,6 +1798,9 @@ function _sshd_server_heartbeat_3(_data: string) : count
 function _sshd_start_3(_data: string) : count
 	{
 	# event sshd_start_3(ts: time, version: string, sid: string, h: addr, p: port)
+	
+	print fmt("DEBUGGING DATA (lbrown) inside _sshd_start_3");
+	
 	local parts = split_string(_data, kv_splitter);
 
 	local ts = ssh_time( parts[1] );
@@ -2236,6 +2284,9 @@ function _sftp_process_unknown_3(_data: string) : count
 function _sshd_exit_3(_data: string) : count
 	{
 	#event sshd_exit_3(ts: time, version: string, sid: string, h: addr, p: port)
+	
+	print fmt("DEBUGGING DATA (lbrown) inside _sshd_exit_3");
+	
 	local parts = split_string(_data, kv_splitter);
 
 	local ts = ssh_time( parts[1] );
@@ -2537,6 +2588,8 @@ event sshLine(description: Input::EventDescription, tpe: Input::Event, LV: lineV
 	# count the transaction record
 	++input_count;
 
+	print fmt("DEBUGGING DATA (lbrown) reading line from log: %s", parts);
+	
 	# get the event name
 	local event_name = parts[1];
 	
