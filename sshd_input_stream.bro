@@ -212,7 +212,7 @@ function _auth_info_3(_data: string) : count
 	{
 	# event auth_info_3(ts: time, version: string, sid: string, cid: count, authmsg: string, uid: string, meth: string, s_addr: addr, s_port: port, r_addr: addr, r_port: port)
 	print fmt("DEBUGGING DATA (lbrown): inside _auth_info_3");
-
+	
 	local parts = split_string(_data, kv_splitter);
 
 	local ts = ssh_time( parts[1] );
