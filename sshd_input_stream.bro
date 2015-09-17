@@ -98,8 +98,7 @@ function ssh_string(s: string) : string
 	local ret_str: string = " ";
 
 	if ( |key_val| == 2 ) {
-		#ret_str = raw_unescape_URI( key_val[1] );
-		ret_str = unescape_URI( key_val[1] );
+		ret_str = raw_unescape_URI( key_val[1] );
 		# remove backspace characters
 		ret_str = edit(ret_str, "\x08");
 		ret_str = edit(ret_str, "\x7f");
