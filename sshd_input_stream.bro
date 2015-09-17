@@ -29,10 +29,6 @@ export {
 	global port_match: pattern = /^[0-9]{1,5}\/(tcp|udp|icmp)$/;
 	global time_match: pattern = /^[0-9]{9,10}.[0-9]{0,6}$/;
 
-	# this pattern is used to take apart multi-line patterns that are stuck together
-	# they tend to focus on just a few event types, so we try them for now
-	global multi_match: pattern = /^notty_server_data |^channel_notty_server_data_3 |^channel_data_server_3 |^channel_notty_client_data_3 |^data_server |^notty_server_data_2 |^data_client |^data_server_2 /;
-#
 	global v16: vector of count = vector(2,3,4,5,6,7,8,9,10,11,12,13,14,15,16);
 	global v2s: vector of count = vector(2,4,6);
 
@@ -215,10 +211,8 @@ function dump_line_data(_data: string) : count
 function _auth_info_3(_data: string) : count
 	{
 	# event auth_info_3(ts: time, version: string, sid: string, cid: count, authmsg: string, uid: string, meth: string, s_addr: addr, s_port: port, r_addr: addr, r_port: port)
-	
 	print fmt("DEBUGGING DATA (lbrown): inside _auth_info_3");
 
-	
 	local parts = split_string(_data, kv_splitter);
 
 	local ts = ssh_time( parts[1] );
@@ -390,7 +384,6 @@ function _sftp_process_setstat_3(_data: string) : count
 function _auth_key_fingerprint_3(_data: string) : count
 	{
 	# event auth_key_fingerprint_3(ts: time, version: string, sid: string, cid: count, fingerprint: string, key_type: string)
-	
 	print fmt("DEBUGGING DATA (lbrown): inside _auth_key_fingerprint_3");
 	
 	local parts = split_string(_data, kv_splitter);
@@ -453,7 +446,6 @@ function _auth_ok_2(_data: string) : count
 function _channel_data_client_3(_data: string) : count
 	{
 	# event channel_data_client_3(ts: time, version: string, sid: string, cid: count, channel:count, _data:string)
-	
 	print fmt("DEBUGGING DATA (lbrown): inside _channel_data_client_3");
 	
 	local parts = split_string(_data, kv_splitter);
@@ -472,7 +464,6 @@ function _channel_data_client_3(_data: string) : count
 function _channel_data_server_3(_data: string) : count
 	{
 	# event channel_data_server_3(ts: time, version: string, sid: string, cid: count, channel: count, _data: string)
-	
 	print fmt("DEBUGGING DATA (lbrown): inside _channel_data_server_3");
 	
 	local parts = split_string(_data, kv_splitter);
@@ -533,7 +524,6 @@ function _data_server_sum_2(_data: string) : count
 function _channel_data_server_sum_3(_data: string) : count
 	{
 	# event channel_data_server_sum_3(ts: time, version: string, sid: string, cid: count, channel: count, bytes_skip: count)
-	
 	print fmt("DEBUGGING DATA (lbrown): inside _channel_data_server_sum_3");
 	
 	local parts = split_string(_data, kv_splitter);
@@ -565,7 +555,6 @@ function _channel_exit_2(_data: string) : count
 function _channel_free_3(_data: string) : count
 	{
 	# event channel_free_3(ts: time, version: string, sid: string, cid: count,channel: count, name: string)
-	
 	print fmt("DEBUGGING DATA (lbrown): inside _channel_free_3");
 	
 	local parts = split_string(_data, kv_splitter);
@@ -585,7 +574,6 @@ function _channel_free_3(_data: string) : count
 function _channel_new_3(_data: string) : count
 	{
 	# event channel_new_3(ts: time, version: string, sid: string, cid: count, found: count, ctype: count, name: string)
-	
 	print fmt("DEBUGGING DATA (lbrown): inside _channel_new_3");
 	
 	local parts = split_string(_data, kv_splitter);
@@ -993,7 +981,6 @@ function _server_input_channel_open_2(_data: string) : count
 function _session_channel_request_3(_data: string) : count
 	{
 	# event session_channel_request_3(ts: time, version: string, sid: string, cid: count, pid: int, channel: count, rtype: string)
-	
 	print fmt("DEBUGGING DATA (lbrown): inside _session_channel_request_3");
 	
 	local parts = split_string(_data, kv_splitter);
@@ -1014,7 +1001,6 @@ function _session_channel_request_3(_data: string) : count
 function _session_exit_3(_data: string) : count
 	{
 	# event session_exit_3(ts: time, version: string, sid: string, cid: count, channel: count, pid: count, ststus: count)
-	
 	print fmt("DEBUGGING DATA (lbrown): inside _session_exit_3");
 	
 	local parts = split_string(_data, kv_splitter);
@@ -1035,7 +1021,6 @@ function _session_exit_3(_data: string) : count
 function _session_input_channel_open_3(_data: string) : count
 	{
 	# event session_input_channel_open_3(ts: time, version: string, sid: string, cid: count, tpe: count, ctype: string, rchan: int, rwindow: int, rmaxpack: int)
-	
 	print fmt("DEBUGGING DATA (lbrown): inside _session_input_channel_open_3");
 	
 	local parts = split_string(_data, kv_splitter);
@@ -1058,7 +1043,6 @@ function _session_input_channel_open_3(_data: string) : count
 function _session_new_3(_data: string) : count
 	{
 	# event session_new_3(ts: time, version: string, sid: string, cid: count, pid: int, ver: string)
-	
 	print fmt("DEBUGGING DATA (lbrown): inside _session_new_3");
 	
 	local parts = split_string(_data, kv_splitter);
@@ -1078,7 +1062,6 @@ function _session_new_3(_data: string) : count
 function _session_remote_do_exec_3(_data: string) : count
 	{
 	# event session_remote_do_exec_3(ts: time, version: string, sid: string, cid: count, channel: count, ppid: count, command: string)
-	
 	print fmt("DEBUGGING DATA (lbrown): inside _session_remote_do_exec_3");
 	
 	local parts = split_string(_data, kv_splitter);
@@ -1099,7 +1082,6 @@ function _session_remote_do_exec_3(_data: string) : count
 function _session_remote_exec_no_pty_3(_data: string) : count
 	{
 	# event session_remote_exec_no_pty_3(ts: time, version: string, sid: string, cid: count, channel: count, ppid: count, command: string)
-	
 	print fmt("DEBUGGING DATA (lbrown): inside _session_remote_exec_no_pty_3");
 	
 	local parts = split_string(_data, kv_splitter);
@@ -1722,7 +1704,6 @@ function _sshd_connection_start_3(_data: string) : count
 	{
 	# event sshd_connection_start_3(ts: time, version: string, sid: string, cid: count, int_list: string, r_addr: addr, r_port: port, l_addr: addr, l_port: port, i: count)
 	# sshd_connection_start_3 time=1342000800.858400 uristring=NMOD_3.08 uristring=931154466%3Agrace01%3A22 count=1398340635 uristring=127.0.0.1_10.77.1.10_128.55.81.74_128.55.34.74_10.10.10.208 addr=10.77.1.1 port=48744/tcp addr=0.0.0.0 port=22/tcp count=140737488349744
-	
 	print fmt("DEBUGGING DATA (lbrown): inside _sshd_connection_start_3");
 
 	local parts = split_string(_data, kv_splitter);
@@ -1798,7 +1779,6 @@ function _sshd_server_heartbeat_3(_data: string) : count
 function _sshd_start_3(_data: string) : count
 	{
 	# event sshd_start_3(ts: time, version: string, sid: string, h: addr, p: port)
-	
 	print fmt("DEBUGGING DATA (lbrown): inside _sshd_start_3");
 	
 	local parts = split_string(_data, kv_splitter);
@@ -2284,7 +2264,6 @@ function _sftp_process_unknown_3(_data: string) : count
 function _sshd_exit_3(_data: string) : count
 	{
 	#event sshd_exit_3(ts: time, version: string, sid: string, h: addr, p: port)
-	
 	print fmt("DEBUGGING DATA (lbrown): inside _sshd_exit_3");
 	
 	local parts = split_string(_data, kv_splitter);
@@ -2575,113 +2554,66 @@ event sshLine(description: Input::EventDescription, tpe: Input::Event, LV: lineV
 	{
 	local t_d = gsub(LV$d, /\x20\x20/, " ");	
 	LV$d = t_d;
+
         local parts = split_string(LV$d, kv_splitter);
 	local l_parts = |parts|;
-	local ni: count = 2;
-
-	local sticky_test: pattern = /auth_info_3|auth_invalid_user_3|auth_key_fingerprint_3|auth_ok auth_ok_2|auth_pass_attempt_3/
-		| /channel_data_client_3|channel_data_server_3|channel_data_server_sum_3|channel_exit|channel_exit_2|channel_free_3|channel_new_3|channel_notty_analysis_disable_3|channel_notty_client_data_3|channel_notty_server_data_3|channel_pass_skip_3|channel_portfwd_req_3|channel_port_open_3|channel_post_fwd_listener_3|channel_set_fwd_listener_3|channel_socks4_3|channel_socks5_3/
-		| /data_client|data_client_2|data_server|data_server_2|data_server_sum|data_server_sum_2/
-		| /session_channel_request_3|session_do_auth_3|session_exit_3|session_input_channel_open_3|session_new_3|session_remote_do_exec_3|session_remote_exec_no_pty_3|session_remote_exec_pty_3|session_request_direct_tcpip_3|session_tun_init_3|session_x11fwd_3/
-		| /sshd_connection_end_3|sshd_connection_start_3|sshd_exit_3|sshd_key_fingerprint|sshd_key_fingerprint_2|sshd_restart_3|sshd_server_heartbeat_3|sshd_start_3/;
+	# get the event name
+	local event_name = parts[0];
 
 	# count the transaction record
 	++input_count;
 
 	print fmt("DEBUGGING DATA (lbrown): reading line from log: %s", parts);
-	
-	# get the event name
-	local event_name = parts[0];
-	
+
 	# there is no reason for this value to be this low for a legitimate line
 	if ( l_parts < 5 )
 		return;
 
-	if ( event_name in dispatcher ) {
+
+	# look up the first field as event_name
+	# Since a very common issue is extra linefeed, reparse after the first
+	#  ^J and retry,  If that doesn't work, bail since the line is probably corrupt
+	#  puttering around here in the main event loop is not such a good idea...
+	#
 	
-		print fmt("DEBUGGING DATA (lbrown): event name lookup: %s", event_name);
-		if ( event_name in argument_count ) {
-			local arg_set = argument_count[event_name];
-			local i: count;
-			for ( i in arg_set ) {
-				if ( l_parts == arg_set[i] ) {
-					dispatcher[event_name](LV$d);
-					return;
-					}
-				}
+	
+	print fmt("DEBUGGING DATA (lbrown): event name lookup: %s", event_name);
 
-				
-			print fmt("DEBUGGING DATA (lbrown): argument count error: %s %s", event_name, l_parts);
-			
-			# If we get to this place, the initial event identification is correct - 
-			#   that is it is in the dispatcher list, but there is something wrong 
-			#   with the argument checker.  This block of code will attempt to 
-			#   disect the blob of text, parsing it based on the set of known event
-			#   names, and rebuilding the various bits as it can.
-			#
-			# Kinda ugly, but if we are here the data is already assumed to be messed 
-			#   up , so anything  >> nothing...
+        if ( event_name !in dispatcher ) {
 
-			local v12: vector of count = vector(0,1,2,3,4,5,6,7,8,9,10,11);
-			local st1 = split_n(LV$d, sticky_test,T,20);
-			local ret_data = "X";
-			local v: count;
+                local delim = /\r|\n/;
+                local t = split_string(LV$d, delim);
+	
+		# Quick sanity check here since this is just a guess ...
+		if ( |t| < 2 )
+                        return;
 
-			for ( v in v12 ) {
-				if ( v < |st1| ) {
+                parts = split_string(t[1], kv_splitter);
+                event_name = parts[0];
 
-					# first chop up the line - if part [1] is in dispatcher
-					#   then we can start gluing bits back together
-					local t_test = split_string(st1[ v12[v] ], kv_splitter);
+                if ( event_name !in dispatcher ) {
+                        print fmt("ERROR: %s", LV$d);
+                        return;
+                                }
+                }
 
-					if ( t_test[1] in dispatcher ) {
-						if ( ret_data == "X" ) {
-							# first time through...
-							ret_data = fmt("%s", st1[ v12[v] ]);
-							}
-						else {
-							# the current ret_val should contain a well formed event + args
-							# we now pedantically test it to make sure that it is well formed
-							local ttest = split_string(ret_data, kv_splitter);	
-							local ename = ttest[0];
-							#print fmt("     TRY: %s %s", ename, |ttest|);
-							if ( ename in dispatcher ) {
-								local aset = argument_count[ename];
-								local x: count;
-								for ( x in aset ) {
-									if ( |ttest| == aset[x] ) {
-										LV$d = ret_data;
-										# flush old value to event handler
-										event sshLine(description, tpe, LV);
-										#print fmt("     FIX %s", ename);
-										}
-									} # end for
-								}
-							else {
-								# This is a stub for accounting
-								} # end dispatch test
+	# make sure that the
+	if ( event_name in argument_count ) {
+		local arg_set = argument_count[event_name];
+		local i: count;
 
-							ret_data = st1[ v12[v] ];
-							}
-						}
-					else {
-						# t_test[1] not in dispatcher - if not empty, append
-						if ( |st1[ v12[v] ]| > 1 ) {
-							ret_data = fmt("%s%s", ret_data, st1[ v12[v] ]);
-							}
-						else {
-							# another accounting stub
-							}
-						} # end dispatch test else
-							
-					} # |st1| test
-				} # end for-v loop
-			}
-		} else {
-			print fmt("DEBUGGING DATA (lbrown): event name lookup fail: %s", event_name);
-		}
+		for ( i in arg_set ) {
+			if ( l_parts == arg_set[i] ) {
+				dispatcher[event_name](LV$d);
+				return;
+                                }
+                        }
+                }
+                
+                print fmt("DEBUGGING DATA (lbrown): argument count error: %s %s", event_name, l_parts);
+        }
 
-	}
+
 
 event stop_reader()
 	{
@@ -2695,10 +2627,11 @@ event stop_reader()
 event start_reader()
 	{
 	print "start reader";
-	local config_strings: table[string] of string = {
-		 ["offset"] = "-1",
-	};
-	if ( stop_sem == 1 ) { 
+	if ( stop_sem == 1 ) {
+		local config_strings: table[string] of string = {
+			["offset"] = "-1",
+			};
+
 		Input::add_event([$source=data_file, $config=config_strings, $reader=Input::READER_RAW, $mode=Input::STREAM, $name="isshd", $fields=lineVals, $ev=sshLine]);
 		stop_sem = 0;
 		}
@@ -2762,8 +2695,9 @@ function init_datastream() : count
 	if ( DATANODE && (file_size(data_file) != -1.0) ) {
 		print fmt("%s SSHD data file %s located", gethostname(), data_file);
 		local config_strings: table[string] of string = {
-			 ["offset"] = "2",
-		};
+			["offset"] = "-1",
+			};
+
 		Input::add_event([$source=data_file, $config=config_strings, $reader=Input::READER_RAW, $mode=Input::STREAM, $name="isshd", $fields=lineVals, $ev=sshLine]);
 
 		# start rate monitoring for event stream 

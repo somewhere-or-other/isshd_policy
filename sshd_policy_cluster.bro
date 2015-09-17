@@ -76,36 +76,11 @@ export {
 	global notify_suspicous_command = T &redef;
 
 	global suspicous_threshold: count = 5 &redef;
-	global suspicous_command_list = 
-		/^who/
-		| /^rpcinfo/
-		| /uname -a/
-		# it is quite handy that code writers tell us what they are doing ..
-		| /[Ll][Ii][Nn][Uu][Xx][[:blank:]]*([Ll][Oo0][Cc][Aa][Ll]|[Kk][Ee][Rr][Nn][Aa][Ll]).*([Ee][Xx][Pp][Ll][Oo0][Ii][Tt]|[Pp][Rr][Ii][Vv][Ll][Ee][Gg][Ee])/
-		# this general interface form has become really common.  Thanks!
-		#| /(printf|print|fprintf|echo)[[:blank:]].*\[(\-|\+|\*|[Xx]|[:blank:]|!)[[:blank:]].*\]/
-		# second half of above generalization.  Seriously, I really appreciate the standardization of interfaces!
-		#| /[[:blank:]]*\[(\-|\+|\*|[Xx]|[:blank:]|!)[[:blank:]]*\]|[Aa][Bb][Uu][Ss][Ii][Nn][Gg]/
-		| /[Aa][Bb][Uu][Ss][Ii][Nn][Gg]|[Pp][Tt][Rr][Aa][Cc][Ee]/
-		#| /|[Ll][Aa][Uu][Nn][Cc][Hh][Ii][Mn][Gg]|[Ss][Yy][Mm][Bb][Oo][Ll]|[Pp][Rr][Ii]Vv]|[Tt][Rr][Ii][Gg][Gg][Ee][Rr]|[Tt][O0o][O0o][Ll]/
-		# words words words, probably too noisy
-		| /[Ss][Hh][Ee3][Ll1][Ll1][Cc][Oo0][Dd][Ee]|[Pp][A@][Yy][Ll1][Oo0][Aa@][Dd]|[Ee][Xx][Pp][Ll1][Oo0][Ii][Tt]/
-		# words that I do not commonly find in scientific or benchmark code ...
-		| /[Kk]3[Rr][Nn]3[Ll]|[Rr]3[Ll]3[Aa][Ss$]3|[Mm]3[Tt][Hh]34[Dd]|[Ll][Oo0][Oo0][Kk]1[Nn][Gg]|[Tt]4[Rr][Gg]3[Tt][Zz]|[Cc]0[Mm][Pp][Uu][Tt]3[Rr]|[Ss][Hh][Ee3][Ll1][Ll1][Cc][Oo0][Dd][Ee3]|[Bb][Ii1][Tt][Cc][Hh][Ee3][ZzSs$]/
-		# bit of a catch all re the generic interface construct [+]/[-] ...
-		#  first case when the IC is the first character set in the line
-		#| /^.{0,8}\[[-\/|]\]/
-		#  then we look for space *after* the [x] grouping
-		| /^.{0,8}\[[-\/|+]\]/
-	&redef;
+	global suspicous_command_list: pattern &redef;
 
 	# this set of commands should be alarmed on when executed
 	#  remotely
-	global alarm_remote_exec =
-		/sh -i/
-		| /bash -i/
-	&redef;
-
+	global alarm_remote_exec: pattern &redef;
 	global alarm_remote_exec_whitelist: pattern &redef;
 
 	global user_white_list: pattern &redef;
@@ -113,49 +88,8 @@ export {
 	# Data formally from login.bro - this has been imported as a basic set with
 	#  additional notes put in the local instance init file.  
 	#
-	const input_trouble = 
-		  /rewt/
-		| /eggdrop/
-		| /(shell|xploit)_?code/
-		| /execshell/
-		| /unset[ \t]+(histfile|history|HISTFILE|HISTORY)/
-		| /cd[ \t]+\/dev\/[a-zA-Z]{3}/
-		| />\/etc\/passwd/
-		| /#define NOP.*0x/
-		# test to see if these generate too much noise
-		| /setuid\(0\)/
-		| /setgid\(0\)/
-		# look for shells being execed in a c-code sort of way
-		| /execl\(\"\/bin\/sh\"\, \"\/bin\/sh\", NULL\)/
-		# another test for signal/noise
-		| /open\(\"\/proc\/ksyms\", \"r\"\)/
-		# somewhat oldschool, but often old is tried before new ....
-		| /open\(\"\/dev\/(mem|kmem|oldmem|shmem)/
-		# the old self-re-exec ...
-		| /execl\(\"\/proc\/self\/exe\"/
-		# common more last year
-		| /selinux_ops|dummy_security_ops|capability_ops/
-		| /[Sh][Hh][Ee3][Ll1][Ll1][Cc][Oo0[Dd][Ee]/
-	&redef;
-
-	const output_trouble =
-		  /^-r.s.*root.*\/bin\/(sh|csh|tcsh)/
-		| /Jumping to address/
-		| /(shell|xploit)_code/
-		| /(shell|xploit)code/
-		| /execshell/
-		| /BOT_VERSION/
-		| /(cd \/; uname -a; pwd; id)/
-		| /[aA][dD][oO][rR][eE]/	# rootkit
-		| /setuid\(0\)/
-		| /setgid\(0\)/
-		| /execl\(\"\/bin\/sh\"\, \"\/bin\/sh\", NULL\)/
-		| /open\(\"\/proc\/ksyms\", \"r\"\)/
-		| /open\(\"\/dev\/(mem|kmem|oldmem|shmem)/
-		| /execl\(\"\/proc\/self\/exe\"/
-		| /selinux_ops|dummy_security_ops|capability_ops/
-		| /[Ss][Hh][Ee3][Ll1][Ll1][Cc][Oo0[Dd][Ee]/
-	&redef;
+	global input_trouble: pattern &redef;
+	global output_trouble: pattern &redef;
 
 	# lists of regular expressions which might trigger the hostile detect, but 
 	#   are actually benign from this context.
@@ -227,8 +161,7 @@ function parse_line(data: string, t: count) : set[string]
 			if ( t == LINE_CLIENT )  {
 
 				if ( (input_trouble in split_on_space[space_element]) && 
-					(split_on_space[space_element] !in return_set) &&
-					(input_trouble_whitelist !in split_on_sc[sc_element]) ) {
+					(split_on_space[space_element] !in return_set) ) {
 
 		 			add return_set[ split_on_space[space_element] ];
 					print fmt("seen hostile LINE_CLIENT command: %s", split_on_space[space_element]);
@@ -238,8 +171,7 @@ function parse_line(data: string, t: count) : set[string]
 			if ( t == LINE_SERVER ) { 
 		
 				if ( (output_trouble in split_on_space[space_element]) && 
-					(split_on_space[space_element] !in return_set) &&
-					(output_trouble_whitelist !in split_on_sc[sc_element]) ) {
+					(split_on_space[space_element] !in return_set) ) {
 
 		 			add return_set[ split_on_space[space_element] ];
 					print fmt("seen hostile LINE_SERVER command: %s", split_on_space[space_element]);
