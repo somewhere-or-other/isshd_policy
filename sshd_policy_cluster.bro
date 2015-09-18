@@ -413,6 +413,9 @@ event channel_data_client_3(ts: time, version: string, sid: string, cid: count, 
 
 event channel_data_server_3(ts: time, version: string, sid: string, cid: count, channel: count, data: string)
 {
+
+	print fmt("DEBUGGING (lbrown): inside event channel_data_server_3, data: %s", data);
+
 	if ( channel_data_server_notice ) {
 
 		local CR:SSHD_CORE::client_record = SSHD_CORE::test_cid(sid,cid);
