@@ -277,8 +277,6 @@ function test_hostile_client(data:string, CR: SSHD_CORE::client_record, channel:
 	{
 	local ret= 0; # default return value
 
-	print fmt("DEBUGGING (lbrown): in test_hostile_client, before checking for input_trouble in data");
-	
 	if ( input_trouble in data ) {
 
 		print fmt("DEBUGGING (lbrown): in test_hostile_client, found input_trouble in data; data: %s", data);
@@ -323,8 +321,6 @@ function test_hostile_server(data:string, CR: SSHD_CORE::client_record, channel:
 	{
 	local ret= 0; # default return value
 
-	print fmt("DEBUGGING (lbrown): in test_hostile_server, before checking for output_trouble in data");
-	
 	if ( output_trouble in data ) {
 
 		print fmt("DEBUGGING (lbrown): in test_hostile_server, found output_trouble in data; data: %s", data);
