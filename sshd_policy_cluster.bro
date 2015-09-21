@@ -102,17 +102,6 @@ export {
 } # end export
 
 ######################################################################################
-#  external values
-######################################################################################
-
-#redef notice_action_filters += {
-#	[SSHD_RemoteExecHostile] = send_email_notice,
-#	[SSHD_BadKey] = send_email_notice,
-#};
-
-
-
-######################################################################################
 #  data structs and tables
 ######################################################################################
 # 
@@ -161,6 +150,7 @@ function parse_line(data: string, t: count) : set[string]
 			if ( t == LINE_CLIENT )  {
 
 				if ( (input_trouble in split_on_space[space_element]) && 
+					(input_trouble_whitelist !in split_on_space[space_element]) &&
 					(split_on_space[space_element] !in return_set) ) {
 
 		 			add return_set[ split_on_space[space_element] ];
@@ -170,7 +160,8 @@ function parse_line(data: string, t: count) : set[string]
 
 			if ( t == LINE_SERVER ) { 
 		
-				if ( (output_trouble in split_on_space[space_element]) && 
+				if ( (output_trouble in split_on_space[space_element]) &&
+					(output_trouble_whitelist !in split_on_space[space_element]) && 
 					(split_on_space[space_element] !in return_set) ) {
 
 		 			add return_set[ split_on_space[space_element] ];
@@ -257,7 +248,7 @@ function test_remote_exec(data: string, CR: SSHD_CORE::client_record, sid:string
 
 	if ( alarm_remote_exec in data ) {
 
-		# ... these are not the androids that you are looking for ...
+		# ... these are not the droids that you are looking for ...
 		if ( alarm_remote_exec_whitelist !in data ) {	
 			#
 			NOTICE([$note=SSHD_RemoteExecHostile,
@@ -277,7 +268,7 @@ function test_hostile_client(data:string, CR: SSHD_CORE::client_record, channel:
 	{
 	local ret= 0; # default return value
 
-	if ( input_trouble in data ) {
+	if ( (input_trouble in data) && (input_trouble_whitelist !in data) ) {
 
 		# now extract the offending command(s)
 		local s_set: set[string];
@@ -319,7 +310,7 @@ function test_hostile_server(data:string, CR: SSHD_CORE::client_record, channel:
 	{
 	local ret= 0; # default return value
 
-	if ( output_trouble in data ) {
+	if ( (output_trouble in data) && (output_trouble_whitelist !in data) ) {
 
 		# now extract the offending command(s)
 		local s_set: set[string];
@@ -328,7 +319,7 @@ function test_hostile_server(data:string, CR: SSHD_CORE::client_record, channel:
 		s_set = parse_line(data, LINE_SERVER);	
 
 		# if data contains a locally whitelisted element, then
-		#  the return vlue here might be empty.  If so, then
+		#  the return value here might be empty.  If so, then
 		#  bail
 		if ( |s_set| == 0 )
 			return ret;
@@ -458,7 +449,7 @@ event channel_notty_server_data_3(ts: time, version: string, sid: string, cid: c
 				CR$channel_type[channel] = "unknown";
 			}
 
-		# run client data through analyzer for both suspicous and hostile content
+		# run server data through analyzer for both suspicous and hostile content
 		test_suspicous(data, CR, channel, sid, cid);
 		test_hostile_server(data, CR, channel, sid, cid);
 	}
