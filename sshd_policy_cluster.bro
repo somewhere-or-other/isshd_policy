@@ -208,9 +208,7 @@ function test_suspicous(data:string, CR: SSHD_CORE::client_record, channel:count
 				++CR$suspicous_count;
 
 				if ( (notify_suspicous_command) && (CR$suspicous_count <= suspicous_threshold) ) {
-					
-					print fmt("DEBUGGING (lbrown): inside test_suspicous, about to generate SSHD_Suspicous notice for CR %s", CR);
-					
+	
 					NOTICE([$note=SSHD_Suspicous,
 						$msg=fmt("%s %s %s %s %s @ %s -> %s:%s command: %s",
 						CR$log_id, channel, sid, cid, CR$uid,
@@ -227,9 +225,7 @@ function test_suspicous(data:string, CR: SSHD_CORE::client_record, channel:count
 					for ( t_s in CR$s_commands ) {
 						r_s = fmt("%s %s", r_s, t_s);
 					}
-					
-					print fmt("DEBUGGING (lbrown): inside test_suspicous, about to generate SSHD_SuspicousThreshold notice for CR %s", CR);
-					
+
 					NOTICE([$note=SSHD_SuspicousThreshold,
 						$msg=fmt("%s %s %s %s %s @ %s -> %s %s:%s {%s}",
 						CR$log_id, channel, sid, cid, CR$uid, 
@@ -295,7 +291,7 @@ function test_hostile_client(data:string, CR: SSHD_CORE::client_record, channel:
 
 		# XXX get test for channel non-exist
 
-		print fmt("DEBUGGING (lbrown): inside test_hostile_client about to generate SSHD_Hostile notice for client CR: %s", CR);
+		print fmt("DEBUGGING (lbrown): about to generate SSHD_Hostile notice for client CR: %s", CR);
 		
 		# now make sure the mess is safe to print in the notice
 		NOTICE([$note=SSHD_Hostile,
@@ -336,8 +332,6 @@ function test_hostile_server(data:string, CR: SSHD_CORE::client_record, channel:
 		for ( s_set_element in s_set ) {
 			ret_str = fmt("%s %s", ret_str, s_set_element);
 		}
-	
-		print fmt("DEBUGGING (lbrown): inside test_hostile_server about to generate SSHD_Hostile notice for client CR: %s", CR);
 	
 		NOTICE([$note=SSHD_Hostile,
 			$msg=fmt("%s %s %s %s %s @ %s -> %s:%s server output: %s [%s]",
