@@ -276,6 +276,8 @@ function test_hostile_client(data:string, CR: SSHD_CORE::client_record, channel:
 	
 	if ( (input_trouble in data) && (input_trouble_whitelist !in data) ) {
 
+		print fmt("DEBUGGING (lbrown): inside test_hostile_client, found input_trouble in data");
+	
 		# now extract the offending command(s)
 		local s_set: set[string];
 		local s_set_element: string = " ";
@@ -322,6 +324,8 @@ function test_hostile_server(data:string, CR: SSHD_CORE::client_record, channel:
 	
 	if ( (output_trouble in data) && (output_trouble_whitelist !in data) ) {
 
+		print fmt("DEBUGGING (lbrown): inside test_hostile_server, found output_trouble in data");
+		
 		# now extract the offending command(s)
 		local s_set: set[string];
 		local s_set_element: string = " ";
