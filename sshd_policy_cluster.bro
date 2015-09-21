@@ -326,7 +326,7 @@ function test_hostile_server(data:string, CR: SSHD_CORE::client_record, channel:
 
 	print fmt("DEBUGGING (lbrown): inside test_hostile_server, data: %s", data);
 
-	print fmt("DEBUGGING (lbrown): length of input_trouble_whitelist: %u )", |input_trouble_whitelist|);
+	print fmt("DEBUGGING (lbrown): length of output_trouble_whitelist: %u )", |output_trouble_whitelist|);
 
 	if ( (output_trouble in data) && (output_trouble_whitelist !in data) ) {
 
