@@ -274,12 +274,12 @@ function test_hostile_client(data:string, CR: SSHD_CORE::client_record, channel:
 
 	print fmt("DEBUGGING (lbrown): inside test_hostile_client, data: %s", data);
 	
-	print fmt("DEBUGGING (lbrown): length of input_trouble_whitelist: %u )", |input_trouble_whitelist|);
+	if ( input_trouble in data ) {
+		print fmt("DEBUGGING (lbrown): inside special branch of test_hostile_client, found input_trouble in data");
+	}
 	
-	if ( input_trouble_whitelist == /^$/ ) {
-		print fmt("DEBUGGING (lbrown): input_trouble_whitelist is empty");
-	} else {
-		print fmt("DEBUGGING (lbrown): input_trouble_whitelist is nonempty");
+	if ( input_trouble_whitelist !in data ) {
+		print fmt("DEBUGGING (lbrown): inside special branch of test_hostile_client, found input_trouble_whitelist not in data");
 	}
 	
 	if ( (input_trouble in data) && (input_trouble_whitelist !in data) ) {
@@ -331,15 +331,14 @@ function test_hostile_server(data:string, CR: SSHD_CORE::client_record, channel:
 	local ret= 0; # default return value
 
 	print fmt("DEBUGGING (lbrown): inside test_hostile_server, data: %s", data);
-
-	print fmt("DEBUGGING (lbrown): length of input_trouble_whitelist: %u )", |input_trouble_whitelist|);
-
-	if ( output_trouble_whitelist == /^$/ ) {
-		print fmt("DEBUGGING (lbrown): output_trouble_whitelist is empty");
-	} else {
-		print fmt("DEBUGGING (lbrown): output_trouble_whitelist is nonempty");
+	
+	if ( output_trouble in data ) {
+		print fmt("DEBUGGING (lbrown): inside special branch of test_hostile_server, found output_trouble in data");
 	}
 	
+	if ( output_trouble_whitelist !in data ) {
+		print fmt("DEBUGGING (lbrown): inside special branch of test_hostile_server, found output_trouble_whitelist not in data");
+	}
 	
 	if ( (output_trouble in data) && (output_trouble_whitelist !in data) ) {
 
