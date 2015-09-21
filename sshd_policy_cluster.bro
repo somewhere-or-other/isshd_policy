@@ -310,6 +310,8 @@ function test_hostile_client(data:string, CR: SSHD_CORE::client_record, channel:
 
 				
 		ret = 1;
+		} else {
+			print fmt("DEBUGGING (lbrown): inside test_hostile_client, did NOT find input_trouble in data");
 		}
 		
 	return ret;
@@ -354,6 +356,8 @@ function test_hostile_server(data:string, CR: SSHD_CORE::client_record, channel:
 				str_shell_escape(data), str_shell_escape(ret_str) )]);
 				
 		ret = 1;
+		} else {
+			print fmt("DEBUGGING (lbrown): inside test_hostile_server, did NOT find output_trouble in data");
 		}
 		
 	return ret;
