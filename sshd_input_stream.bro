@@ -1308,10 +1308,6 @@ event sshLine(description: Input::EventDescription, tpe: Input::Event, LV: lineV
 	# get the event name
 	local event_name = parts[0];
 
-	print fmt("DEBUGGING (lbrown): parts: %s", parts);
-	print fmt("DEBUGGING (lbrown): event_name: %s", event_name);
-	print fmt("DEBUGGING (lbrown): l_parts: %s", l_parts);
-	
 	# count the transaction record
 	++input_count;
 
