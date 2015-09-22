@@ -268,20 +268,6 @@ function test_hostile_client(data:string, CR: SSHD_CORE::client_record, channel:
 	{
 	local ret= 0; # default return value
 
-	print fmt("DEBUGGING (lbrown): inside test_hostile_client, data: %s", data);
-	
-	if (input_trouble in data) {
-		print fmt("DEBUGGING (lbrown): found input_trouble in data");
-	} else {
-		print fmt("DEBUGGING (lbrown): did NOT find input_trouble in data");
-	}
-	
-	if (input_trouble_whitelist != data) {
-		print fmt("DEBUGGING (lbrown): did NOT find input_trouble_whitelist in data");
-	} else {
-		print fmt("DEBUGGING (lbrown): found input_trouble_whitelist in data");
-	}
-	
 	if ( (input_trouble in data) && (input_trouble_whitelist !in data) ) {
 
 		# now extract the offending command(s)
