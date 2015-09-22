@@ -291,8 +291,6 @@ function test_hostile_client(data:string, CR: SSHD_CORE::client_record, channel:
 
 		# XXX get test for channel non-exist
 
-		print fmt("DEBUGGING (lbrown): about to generate SSHD_Hostile inside test_hostile_client(); CR: %s", CR);
-		
 		# now make sure the mess is safe to print in the notice
 		NOTICE([$note=SSHD_Hostile,
 			$msg=fmt("%s %s %s %s %s @ %s -> %s:%s client output:%s [%s]",
@@ -332,9 +330,7 @@ function test_hostile_server(data:string, CR: SSHD_CORE::client_record, channel:
 		for ( s_set_element in s_set ) {
 			ret_str = fmt("%s %s", ret_str, s_set_element);
 		}
-
-		print fmt("DEBUGGING (lbrown): about to generate SSHD_Hostile inside test_hostile_server(); CR: %s", CR);
-		
+	
 		NOTICE([$note=SSHD_Hostile,
 			$msg=fmt("%s %s %s %s %s @ %s -> %s:%s server output: %s [%s]",
 				CR$log_id, CR$channel_type[channel], sid, cid, CR$uid, 
