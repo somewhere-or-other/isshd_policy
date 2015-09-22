@@ -291,8 +291,6 @@ function test_hostile_client(data:string, CR: SSHD_CORE::client_record, channel:
 
 		# XXX get test for channel non-exist
 
-		print fmt("DEBUGGING (lbrown): about to generate SSHD_Hostile notice for client CR: %s", CR);
-		
 		# now make sure the mess is safe to print in the notice
 		NOTICE([$note=SSHD_Hostile,
 			$msg=fmt("%s %s %s %s %s @ %s -> %s:%s client output:%s [%s]",
