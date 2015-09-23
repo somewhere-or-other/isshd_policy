@@ -76,35 +76,11 @@ export {
 	global notify_suspicous_command = T &redef;
 
 	global suspicous_threshold: count = 5 &redef;
-	global suspicous_command_list = 
-		/^rpcinfo/
-		| /uname -a/
-		# it is quite handy that code writers tell us what they are doing ..
-		| /[Ll][Ii][Nn][Uu][Xx][[:blank:]]*([Ll][Oo0][Cc][Aa][Ll]|[Kk][Ee][Rr][Nn][Aa][Ll]).*([Ee][Xx][Pp][Ll][Oo0][Ii][Tt]|[Pp][Rr][Ii][Vv][Ll][Ee][Gg][Ee])/
-		# this general interface form has become really common.  Thanks!
-		#| /(printf|print|fprintf|echo)[[:blank:]].*\[(\-|\+|\*|[Xx]|[:blank:]|!)[[:blank:]].*\]/
-		# second half of above generalization.  Seriously, I really appreciate the standardization of interfaces!
-		#| /[[:blank:]]*\[(\-|\+|\*|[Xx]|[:blank:]|!)[[:blank:]]*\]|[Aa][Bb][Uu][Ss][Ii][Nn][Gg]/
-		| /[Aa][Bb][Uu][Ss][Ii][Nn][Gg]|[Pp][Tt][Rr][Aa][Cc][Ee]/
-		#| /|[Ll][Aa][Uu][Nn][Cc][Hh][Ii][Mn][Gg]|[Ss][Yy][Mm][Bb][Oo][Ll]|[Pp][Rr][Ii]Vv]|[Tt][Rr][Ii][Gg][Gg][Ee][Rr]|[Tt][O0o][O0o][Ll]/
-		# words words words, probably too noisy
-		| /[Ss][Hh][Ee3][Ll1][Ll1][Cc][Oo0][Dd][Ee]|[Pp][A@][Yy][Ll1][Oo0][Aa@][Dd]|[Ee][Xx][Pp][Ll1][Oo0][Ii][Tt]/
-		# words that I do not commonly find in scientific or benchmark code ...
-		| /[Kk]3[Rr][Nn]3[Ll]|[Rr]3[Ll]3[Aa][Ss$]3|[Mm]3[Tt][Hh]34[Dd]|[Ll][Oo0][Oo0][Kk]1[Nn][Gg]|[Tt]4[Rr][Gg]3[Tt][Zz]|[Cc]0[Mm][Pp][Uu][Tt]3[Rr]|[Ss][Hh][Ee3][Ll1][Ll1][Cc][Oo0][Dd][Ee3]|[Bb][Ii1][Tt][Cc][Hh][Ee3][ZzSs$]/
-		# bit of a catch all re the generic interface construct [+]/[-] ...
-		#  first case when the IC is the first character set in the line
-		#| /^.{0,8}\[[-\/|]\]/
-		#  then we look for space *after* the [x] grouping
-		| /^.{0,8}\[[-\/|+]\]/
-	&redef;
+	global suspicous_command_list: pattern &redef;
 
 	# this set of commands should be alarmed on when executed
 	#  remotely
-	global alarm_remote_exec =
-		/sh -i/
-		| /bash -i/
-	&redef;
-
+	global alarm_remote_exec: pattern &redef;
 	global alarm_remote_exec_whitelist: pattern &redef;
 
 	global user_white_list: pattern &redef;
@@ -124,17 +100,6 @@ export {
 	global bad_key_list: set[string] &redef;
 
 } # end export
-
-######################################################################################
-#  external values
-######################################################################################
-
-#redef notice_action_filters += {
-#	[SSHD_RemoteExecHostile] = send_email_notice,
-#	[SSHD_BadKey] = send_email_notice,
-#};
-
-
 
 ######################################################################################
 #  data structs and tables
@@ -185,6 +150,7 @@ function parse_line(data: string, t: count) : set[string]
 			if ( t == LINE_CLIENT )  {
 
 				if ( (input_trouble in split_on_space[space_element]) && 
+					(input_trouble_whitelist !in split_on_space[space_element]) &&
 					(split_on_space[space_element] !in return_set) ) {
 
 		 			add return_set[ split_on_space[space_element] ];
@@ -194,7 +160,8 @@ function parse_line(data: string, t: count) : set[string]
 
 			if ( t == LINE_SERVER ) { 
 		
-				if ( (output_trouble in split_on_space[space_element]) && 
+				if ( (output_trouble in split_on_space[space_element]) &&
+					(output_trouble_whitelist !in split_on_space[space_element]) && 
 					(split_on_space[space_element] !in return_set) ) {
 
 		 			add return_set[ split_on_space[space_element] ];
@@ -281,7 +248,7 @@ function test_remote_exec(data: string, CR: SSHD_CORE::client_record, sid:string
 
 	if ( alarm_remote_exec in data ) {
 
-		# ... these are not the androids that you are looking for ...
+		# ... these are not the droids that you are looking for ...
 		if ( alarm_remote_exec_whitelist !in data ) {	
 			#
 			NOTICE([$note=SSHD_RemoteExecHostile,
@@ -301,7 +268,7 @@ function test_hostile_client(data:string, CR: SSHD_CORE::client_record, channel:
 	{
 	local ret= 0; # default return value
 
-	if ( input_trouble in data ) {
+	if ( (input_trouble in data) && (input_trouble_whitelist !in data) ) {
 
 		# now extract the offending command(s)
 		local s_set: set[string];
@@ -343,7 +310,7 @@ function test_hostile_server(data:string, CR: SSHD_CORE::client_record, channel:
 	{
 	local ret= 0; # default return value
 
-	if ( output_trouble in data ) {
+	if ( (output_trouble in data) && (output_trouble_whitelist !in data) ) {
 
 		# now extract the offending command(s)
 		local s_set: set[string];
@@ -352,7 +319,7 @@ function test_hostile_server(data:string, CR: SSHD_CORE::client_record, channel:
 		s_set = parse_line(data, LINE_SERVER);	
 
 		# if data contains a locally whitelisted element, then
-		#  the return vlue here might be empty.  If so, then
+		#  the return value here might be empty.  If so, then
 		#  bail
 		if ( |s_set| == 0 )
 			return ret;
@@ -482,7 +449,7 @@ event channel_notty_server_data_3(ts: time, version: string, sid: string, cid: c
 				CR$channel_type[channel] = "unknown";
 			}
 
-		# run client data through analyzer for both suspicous and hostile content
+		# run server data through analyzer for both suspicous and hostile content
 		test_suspicous(data, CR, channel, sid, cid);
 		test_hostile_server(data, CR, channel, sid, cid);
 	}
